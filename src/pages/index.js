@@ -2,15 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import gsap from "gsap";
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import logo from '../images/logo.png';
-import stepOne from '../images/step_1.png';
-import stepTwo from '../images/step_2.png';
+import stepOne from '../images/step_1.gif';
+import stepTwo from '../images/step_2.gif';
 import stepThree from '../images/step_3.png';
 import InFrame from '../images/In_frame.png';
 import OutFrame from '../images/out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
 import crossBT from '../images/crossbt.png';
 import videoIntro from '../images/videointro.mp4';
-import arrowOptions from '../images/arrow_options.png';
+import arrowOptions from '../images/arrow_options.gif';
 
 const ffmpeg = createFFmpeg({ log: false });
 
