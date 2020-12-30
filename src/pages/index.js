@@ -8,6 +8,7 @@ import InFrame from '../images/In_frame.png';
 import OutFrame from '../images/Out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
 import crossBT from '../images/crossbt.png';
+import videoIntro from '../images/videointro.mp4';
 
 const ffmpeg = createFFmpeg({ log: false });
 
@@ -19,19 +20,20 @@ export default function Home() {
   const captureScreenBT = useRef(null);
   const thumbIn = useRef(null);
   const thumbOut = useRef(null);
-  const cueIn = useRef(null);
+  const cueIn = useRef();
   const cueOut = useRef(null);
   const sliderIn = useRef(null);
   const sliderOut = useRef(null);
 
   const [ready, setReady] = useState(false);
-  const [video, setVideo] = useState("./video.mp4");
+  const [video, setVideo] = useState(videoIntro);
   const [gif, setGif ] = useState();
   const [currentTime, setCurrentTime] = useState(0);
   const [percentageTime, setPercentageTime] = useState(0);
   const [duration, setDuration] = useState(null);
-  const [inCut, setInCut] = useState(0);
-  const [outCut, setOutCut] = useState(100);
+  const [inCut, setInCut] = useState(10);
+  const [outCut, setOutCut] = useState(80);
+  const [recording, setRecording] = useState(false);
 
   const load = async () => {
     await ffmpeg.load();
@@ -41,15 +43,16 @@ export default function Home() {
   useEffect(()=>{
     load();
     console.log("loaded!")
+    // sliderOut.current.value=100;
     }, [])
 
   const percent2int =(inPercentage)=>{
     let inInt = inPercentage/100 * videoRef.current.duration;
-    return inInt;
+    return inInt.toFixed(2);
   }
   const int2percent =(inInt)=>{
     let outPercentage = inInt*100/ videoRef.current.duration;
-    return outPercentage;
+    return outPercentage.toFixed(2);
   }
 
   const convertToGif = async () => {
@@ -67,9 +70,11 @@ export default function Home() {
   }
 
   function handleInSlider(e){
-    e.target.value<outCut? setInCut(e.target.value):e.target.value = outCut;
-    thumbIn.current.currentTime=percent2int(e.target.value);
-  }//GLITCH
+    if(video){
+      e.target.value<outCut? setInCut(e.target.value):e.target.value = outCut;
+      thumbIn.current.currentTime=percent2int(e.target.value);
+    }
+  }
   
   function handleOutSlider(e){
     e.target.value>inCut? setOutCut(e.target.value):e.target.value = inCut;
@@ -77,8 +82,18 @@ export default function Home() {
   }
 
   function UpdateTime(){
-    setCurrentTime(videoRef.current.currentTime)
-    setPercentageTime(int2percent(videoRef.current.currentTime))
+    if(!recording){
+      // console.log("updatetime", videoRef.current.currentTime, percent2int(inCut), percent2int(outCut))
+      if(videoRef.current.currentTime<=percent2int(inCut)){
+        setCurrentTime(percent2int(inCut))
+        videoRef.current.currentTime = currentTime;
+      } else if(videoRef.current.currentTime>=percent2int(outCut)){
+        videoRef.current.currentTime = percent2int(inCut);
+      }else{
+        setCurrentTime(videoRef.current.currentTime)
+      }
+      setPercentageTime(int2percent(videoRef.current.currentTime))
+    }
   }
 
 
@@ -104,20 +119,30 @@ export default function Home() {
     startRecording();
     stream.getVideoTracks()[0].addEventListener('ended', () => {
       console.log(typeof(stream));
+      // videoRef.current.srcObject = null;
+      //stopRecording();
+      setInCut(0)
+      setCurrentTime(0)
+      setOutCut(100)
       videoRef.current.srcObject = null;
-      
+      mediaRecorder.stop();
+      setRecording(false);
+      setTimeout(() => {
+        const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
+        // recordedVideo.src = null;
+        // recordedVideo.srcObject = null;
+        setVideo(window.URL.createObjectURL(superBuffer));
+        videoRef.current.controls = true;
+        videoRef.current.play();
+      }, 1500);
 
-      const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
-      // recordedVideo.src = null;
-      // recordedVideo.srcObject = null;
-      setVideo(window.URL.createObjectURL(superBuffer));
-      videoRef.current.controls = true;
-      videoRef.current.play();
+      
        // captureScreenBT.disabled = false;
     });
   }
 
   function startRecording() {
+    setRecording(true);
     recordedBlobs = [];
     let options = {mimeType: 'video/webm;codecs=vp9,opus'};
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
@@ -158,21 +183,30 @@ export default function Home() {
   function closeGifView(){
     setGif('');
   }
+
+  function stopRecording(){
+    setInCut(0)
+    setCurrentTime(0)
+    setOutCut(100)
+    videoRef.current.srcObject = null;
+    mediaRecorder.stop();
+    setRecording(false);
+  }
   return ready ? (
 <div className="App">
     <div className="GifView" style={gif? {display:'block'}:{display:'none'}}>
-    <img className="saveyourTitle" src={SaveYour}/>
-    <img className="crossBT" onClick={closeGifView} src={crossBT}/>
-      {gif && <img className="yourgif" src={gif}/>}
+    <img alt="saveTitle" className="saveyourTitle" src={SaveYour}/>
+    <img  alt="closeWindow" className="crossBT" onClick={closeGifView} src={crossBT}/>
+      {gif && <img  alt="YourGif" className="yourgif" src={gif}/>}
       {gif && <h3>result</h3>}
     </div>
     <div className='wrapper'>
-    <div className='logo'><img src={logo}/></div>
-    <div className='stepOne'><img src={stepOne}/></div>
-    <div className='stepTwo'><img src={stepTwo}/></div>
-    <div className='stepThree'><img src={stepThree}/></div>
+    <div className='logo'><img  alt="Logo GIFTAPE" src={logo}/></div>
+    <div className='stepOne'><img  alt="stepOne" src={stepOne}/></div>
+    <div className='stepTwo'><img  alt="steptwo" src={stepTwo}/></div>
+    <div className='stepThree'><img  alt="stepthree" src={stepThree}/></div>
     <div className='rays'></div>
-    <button onClick={(e)=>mediaRecorder.stop()}>STOP</button>
+    <button onClick={(e)=>stopRecording()}>STOP</button>
     <div className='recordScreenIcon'></div>
     <div ref={captureScreenBT} onClick={(e)=>captureScreen()} className='recordScreenText'></div>
 
@@ -192,7 +226,7 @@ export default function Home() {
     <div className="TVbox">
     {video && <div className="CurrentTime"  style={{left: percentageTime+"%"}}></div>}
     <div className="timeline" style={{left:inCut+"%", width:outCut-inCut+"%"}}></div>
-    {video && <video className="videoPlayer" onTimeUpdate={UpdateTime} onPlay={()=> setDuration(videoRef.current.duration)}  ref={videoRef} playsInline autoPlay={true} loop muted src={video}></video>}
+    {video && <video className="videoPlayer" onEnded={(e)=>{videoRef.current.currentTime=percent2int(inCut)}} onTimeUpdate={UpdateTime} onPlay={()=> setDuration(videoRef.current.duration)}  ref={videoRef} playsInline autoPlay={true} loop muted src={video}></video>}
     {/* {video && <video className="videoPlayer" onTimeUpdate={UpdateTime} onPlay={()=> setDuration(videoRef.current.duration)}  ref={videoRef} playsInline autoPlay={true} loop muted src={video}></video>} */}
     </div>
 
@@ -201,23 +235,23 @@ export default function Home() {
           </p>
         <div className="sliders">
           <div className='sliderIn'>
-            <input className="InSlider" ref={sliderIn} onChange={(e)=>handleInSlider(e)} min="0" max="100" step="1" type="range" />
+            <input className="InSlider" ref={sliderIn} value={inCut} onChange={(e)=>handleInSlider(e)} min="0" max="100" step="1" type="range" />
           </div>
           <div className='sliderOut'>
-            <input className="OutSlider" ref={sliderOut} onChange={(e)=>handleOutSlider(e)} min="0" max="100" step="1" type="range" />
+            <input className="OutSlider" ref={sliderOut} value={outCut} onChange={(e)=>handleOutSlider(e)} min="0" max="100" step="1" type="range" />
           </div>
         </div>
 
 
           <div className="FilmStrip">
             <div className="cue" ref={cueIn} style={{left:inCut+"%"}}>
-            <img className="Frame" src={InFrame}/>
-              {video && <video className="video-js" ref={thumbIn} playsInline width="120" src={video}></video>}
+            <img alt="frame" className="Frame" src={InFrame}/>
+              {video && <video className="video-js" ref={thumbIn} playsInline src={video}></video>}
             </div>
             <div className="cue" ref={cueOut} style={{left:outCut+"%"}}>
-            <img className="Frame" src={OutFrame}/>
+            <img  alt="frame" className="Frame" src={OutFrame}/>
 
-              {video && <video className="video-js" ref={thumbOut} playsInline width="120" src={video}></video>}
+              {video && <video className="video-js" ref={thumbOut} playsInline src={video}></video>}
             </div>
             <div className="InTimeline"  style={{width:inCut+"%"}}></div>
             <div className="OutTimeline"  style={{width:100-outCut+"%"}}></div>
