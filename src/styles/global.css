@@ -107,9 +107,14 @@ body{
 }
 .logo{
   position: relative;
-  top:20px;
-  left:30px;
+  top:30px;
+  left:55px;
 }
+.logo img{
+  width: 300px;
+  height: auto;
+}
+
 .stepOne{
   position: absolute;
   right: -200px;
@@ -124,10 +129,7 @@ body{
 .stepThree img{
   width: 80%;
 }
-.logo img{
-  width: 30%;
-  height: auto;
-}
+
 .stepTwo{
   position: absolute;
   right: -160px;
@@ -273,10 +275,30 @@ body{
   width:208px;
   height: 150px;
   background-repeat:no-repeat;
-  left:-70px;
-  top:600px;
+  left:-50px;
+  top:570px;
   background-size:contain;
   background-image: url('../images/gifVideo.png');
+  cursor: pointer;
+}
+.pleaseWait{
+  position: absolute;
+  width:200px;
+  height: auto;
+  margin-left:50%;
+  left: -100px;
+  margin-top:400px;
+  z-index: -9;
+}
+.convertBT{
+  position: absolute;
+  width:258px;
+  height: 150px;
+  background-repeat:no-repeat;
+  left:140px;
+  top:680px;
+  background-size:contain;
+  background-image: url('../images/convert_bt.png');
   cursor: pointer;
 }
 .uploadFile>input {
@@ -291,8 +313,8 @@ body{
   height:120px;
   position: absolute;
   background-repeat:no-repeat;
-  left:70px;
-  top:560px;
+  left:90px;
+  top:540px;
   background-size:contain;
   background-image: url('../images/files_bt.png')
 }

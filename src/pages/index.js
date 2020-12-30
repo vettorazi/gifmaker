@@ -4,13 +4,14 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import logo from '../images/logo.png';
 import stepOne from '../images/step_1.gif';
 import stepTwo from '../images/step_2.gif';
-import stepThree from '../images/step_3.png';
+import stepThree from '../images/step3.gif';
 import InFrame from '../images/In_frame.png';
 import OutFrame from '../images/out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
 import crossBT from '../images/crossbt.png';
 import videoIntro from '../images/videointro.mp4';
 import arrowOptions from '../images/arrow_options.gif';
+import pleaseWait from '../images/pleasewait.gif';
 
 const ffmpeg = createFFmpeg({ log: false });
 
@@ -39,6 +40,10 @@ export default function Home() {
   const [inCut, setInCut] = useState(10);
   const [outCut, setOutCut] = useState(80);
   const [recording, setRecording] = useState(false);
+
+  const [userInteraction, setUserInteraction] = useState(false);
+  const [gifpage, setgifpage] = useState(false);
+
 
 
 
@@ -80,6 +85,7 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
   }
 
   const convertToGif = async () => {
+    setgifpage(true);
     //WASM has its own file system, so you need to send your file to its own file system and then work on the file
     ffmpeg.FS('writeFile','file.mp4', await fetchFile(video));
     let inGif = percent2int(inCut)
@@ -150,7 +156,8 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
       setOutCut(100)
       videoRef.current.srcObject = null;
       mediaRecorder.stop();
-      setRecording(false);
+      setRecording(false); 
+      setUserInteraction(true);
       setTimeout(() => {
         const superBuffer = new Blob(recordedBlobs, {type: 'video/webm'});
         // recordedVideo.src = null;
@@ -226,8 +233,13 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
 
   function closeGifView(){
     setGif('');
+    setgifpage(false);
   }
 
+  function videoUploaded(e){
+    setVideo(URL.createObjectURL(e.target.files?.item(0)))
+    setUserInteraction(true);
+  }
   function stopRecording(){
     setInCut(0)
     setCurrentTime(0)
@@ -235,14 +247,15 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
     videoRef.current.srcObject = null;
     mediaRecorder.stop();
     setRecording(false);
+    setUserInteraction(true);
   }
   return ready ? (
 <div className="App">
-    <div className="GifView" style={gif? {display:'block'}:{display:'none'}}>
+    <div className="GifView" style={gifpage? {display:'block'}:{display:'none'}}>
     <img alt="saveTitle" className="saveyourTitle" src={SaveYour}/>
     <img  alt="closeWindow" className="crossBT" onClick={closeGifView} src={crossBT}/>
       {gif && <img  alt="YourGif" className="yourgif" src={gif}/>}
-      {gif && <h3>result</h3>}
+      {gifpage && <img  alt="YourGif" className="pleaseWait" src={pleaseWait}/>}
     </div>
     
     <div className='wrapper'>
@@ -259,10 +272,11 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
 
     <div className='filesFly' ref={filesFly}></div>
     <div className='uploadFile' ref={uploadFileBT} onMouseLeave={LeaveUploadbt} onMouseOver={HoverUploadbt}>
-    <input type="file" onChange={(e)=> setVideo(URL.createObjectURL(e.target.files?.item(0)))} />   
+    <input type="file" onChange={(e)=> videoUploaded(e)} />   
     </div>
 
-    <button className='ConvertBT' onClick={convertToGif}>Convert</button>
+    <div className='convertBT' style={userInteraction? {display:'block'}:{display:'none'}} onClick={convertToGif}></div>
+    {/* <button className='ConvertBT' onClick={convertToGif}>Convert</button> */}
     {/* <button onClick={(e)=>setInCut(videoRef.current.currentTime)}>Set In</button>
     <button onClick={(e)=>setOutCut(videoRef.current.currentTime)}>Set Out</button>
      */}
@@ -304,5 +318,9 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
 
     </div>
 </div>
-) : ( <p>Loading...</p> );
+) : ( 
+<div className="GifView" style={{display:'block'}}>
+<p>Loading...</p> 
+</div>
+);
 }
