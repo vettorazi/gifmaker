@@ -1,0 +1,349 @@
+.InSlider{
+    -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+     outline: none; /* Removes the blue border.*/
+      background: transparent; /* Otherwise white in Chrome */
+  position:absolute;
+  width:70%;
+  left:65px;
+  top:30px;
+  height:10px; 
+   /* background-color:green; */
+  z-index:20;
+}
+
+.OutSlider{
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  outline: none; /* Removes the blue border.*/
+  background: transparent; /* Otherwise white in Chrome */
+  position:absolute;
+  width:70%;
+  left:55px;
+  top:50px;
+  height:10px;
+  top:30px;
+  z-index:8;
+}
+.cue{
+  position:absolute;
+  width:120px;
+  height:80px;
+  left:0%;
+  z-index:2;
+}
+
+
+.sliderStylized{
+  position:absolute;
+  width:100%;
+  margin-top:40px;
+}
+.CurrentTime{
+  position:absolute;
+  width:10px;
+  height:10px;
+  margin-top:360px;
+  background-color: red;
+  z-index:7;
+}
+.timeline{
+  position:absolute;
+  width:100%;
+  height:10px;
+  margin-top:360px;
+  background-color:yellow;
+  z-index:6;
+}
+
+.OutSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 46px;
+  width: 16px;
+  border-radius: 3px;
+  background: black;
+  cursor: pointer;
+  pointer-events: auto;
+  margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+.InSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 46px;
+  width: 16px;
+  top:300px;
+  pointer-events: auto;
+  border-radius: 3px;
+  background: black;
+  cursor: pointer;
+   margin-top: -5px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+/* SITE LAYOUT */
+body{
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/bg.jpg');
+  background-size: cover;
+  justify-content: center;
+}
+.App{
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url('../images/bg.jpg');
+  background-size: cover;
+  justify-content: center;
+  /* background-attachment:fixed; */
+}
+.wrapper{
+  position: relative;
+  width:  1024px;
+  min-width: 1024px;
+}
+.logo{
+  position: relative;
+  top:20px;
+  left:30px;
+}
+.stepOne{
+  position: absolute;
+  right: -200px;
+  top: 30px;
+}
+.stepOne img{
+  width: 80%;
+}
+.stepTwo img{
+  width: 80%;
+}
+.stepThree img{
+  width: 80%;
+}
+.logo img{
+  width: 30%;
+  height: auto;
+}
+.stepTwo{
+  position: absolute;
+  right: -160px;
+  top: 270px;
+}
+.stepThree{
+  position: absolute;
+  right: -180px;
+  top: 680px;
+}
+
+
+.FilmStrip{
+  position:absolute;
+  width:904px;
+  height:80px;
+  margin-top:600px;
+  left:100px;
+  background-image: url('../images/filmStrip.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index:2;
+}
+.InTimeline{
+  position:absolute;
+  width:50%;
+  height:100%;
+  top:-10px;
+  background-image: url('../images/filmStrip_trimmed.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index:1;
+}
+.OutTimeline{
+  position:absolute;
+  width:50%;
+  height:100%;
+  right:0px;
+  top:-10px;
+  background-image: url('../images/filmStrip_trimmed.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right;
+  z-index:1;
+}
+
+
+.rays{
+  position: absolute;
+  width: 740px;
+  height:570px;
+  background-image: url('../images/rays_tv.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* background-color:red; */
+  display: flex;
+  margin-left:50%;
+  left:-290px;
+  top:120px;
+  z-index:15;
+}
+
+.TVbox{
+  position: absolute;
+  width: 600px;
+  height:500px;
+  background-image: url('../images/bgtv.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  margin-left:50%;
+  left:-260px;
+  top:200px;
+}
+.TVFrame{
+  position: absolute;
+  width: 600px;
+  height:500px;
+  background-image: url('../images/tvframe.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  margin-left:50%;
+  left:-260px;
+  top:200px;
+  z-index:9;
+}
+.videoPlayer{
+  position: relative;
+  width: 500px;
+  height: 400px;
+  margin-left:50%;
+  background-color:black;
+  left:-250px;
+  top:40px;
+}
+
+.sliders{
+  position:absolute;
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  height:200px;
+  margin-left:50%;
+  left:-140px;
+  margin-top:380px;
+}
+.sliderIn{
+  position: absolute;
+  width: 100%;
+  height: 70px;
+  background-image: url('../images/slider_in.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.sliderOut{
+  position: absolute;
+  width: 100%;
+  height: 70px;
+  background-image: url('../images/slider_out.png');
+  margin-top:100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.Frame{
+  position:absolute;
+  z-index:99;
+  width: 140px;
+  left:-10px;
+  top:-30px;
+  height:auto;
+}
+
+.uploadFile{
+  position: absolute;
+  width:208px;
+  height: 150px;
+  background-repeat:no-repeat;
+  left:-70px;
+  top:600px;
+  background-size:contain;
+  background-image: url('../images/gifVideo.png')
+}
+.uploadFile>input {
+  position: absolute;
+  opacity: 0;
+  width:100%;
+  height:100%;
+}
+.filesFly{
+  width:120px;
+  height:120px;
+  position: absolute;
+  background-repeat:no-repeat;
+  left:70px;
+  top:560px;
+  background-size:contain;
+  background-image: url('../images/files_bt.png')
+}
+
+
+.recordScreenIcon{
+  width:120px;
+  height:200px;
+  position: absolute;
+  background-repeat:no-repeat;
+  left:-40px;
+  top:320px;
+  background-size:contain;
+  background-image: url('../images/camera_icon.png')
+}
+.recordScreenText{
+  width:220px;
+  height:140px;
+  position: absolute;
+  background-repeat:no-repeat;
+  left:20px;
+  top:320px;
+  background-size:contain;
+  background-image: url('../images/capture_lettering.png')
+}
+
+.GifView{
+  position: absolute;
+  width:100%;
+  height: 100%;
+  background-size:cover;
+  background-image: url('../images/gifbg.png');
+  z-index:999;
+}
+
+.ConvertBT{
+  position: absolute;
+  z-index:99;
+}
+.saveyourTitle{
+  position: absolute;
+  width:400px;
+  height: auto;
+  margin-left:50%;
+  left: -200px;
+  margin-top:20px;
+}
+
+.yourgif{
+  position: absolute;
+  width:50%;
+  height: auto;
+  margin-left:25%;
+  margin-top:10%;
+}
+.crossBT{
+  position: absolute;
+  width:30px;
+  height: auto;
+  margin-left:77%;
+  margin-top:8%;
+}
