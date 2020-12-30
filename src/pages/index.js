@@ -6,7 +6,7 @@ import stepOne from '../images/step_1.png';
 import stepTwo from '../images/step_2.png';
 import stepThree from '../images/step_3.png';
 import InFrame from '../images/In_frame.png';
-import OutFrame from '../images/Out_frame.png';
+import OutFrame from '../images/out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
 import crossBT from '../images/crossbt.png';
 import videoIntro from '../images/videointro.mp4';
