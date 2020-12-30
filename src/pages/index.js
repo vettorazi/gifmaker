@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import gsap from "gsap";
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import logo from '../images/logo.png';
 import stepOne from '../images/step_1.png';
@@ -25,6 +26,9 @@ export default function Home() {
   const cueOut = useRef(null);
   const sliderIn = useRef(null);
   const sliderOut = useRef(null);
+  const arrowRef = useRef(null);
+  const filesFly = useRef(null);
+  const uploadFileBT = useRef(null);
 
   const [ready, setReady] = useState(false);
   const [video, setVideo] = useState(videoIntro);
@@ -35,6 +39,25 @@ export default function Home() {
   const [inCut, setInCut] = useState(10);
   const [outCut, setOutCut] = useState(80);
   const [recording, setRecording] = useState(false);
+
+
+
+  useEffect(() => {
+         
+    // gsap.from(arrowRef.current, {
+    //   rotation: 180,
+    //     ease: 'none',
+    //     delay: 1
+    // });
+    const onMouseMove=(e=>{
+      if(e.clientY>window.innerHeight*.5){
+gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
+}else{
+  gsap.to(arrowRef.current, {x: 0, y: 0, rotation: -40});
+}
+    })
+    window.addEventListener('mousemove', onMouseMove)
+}, []);
 
   const load = async () => {
     await ffmpeg.load();
@@ -142,6 +165,26 @@ export default function Home() {
     });
   }
 
+  function HoverUploadbt(){
+    gsap.to(uploadFileBT.current, {x: 0, y: 10, rotation: 10, scale: 1.1});
+    gsap.to(filesFly.current, {x: 0, y: 0, rotation: -20, scale: 1.4});
+  }
+  function LeaveUploadbt(){
+    gsap.to(uploadFileBT.current, {x: 0, y: 0, rotation: 0, scale: 1.0});
+    gsap.to(filesFly.current, {x: 0, y: 0, rotation: 0, scale: 1.0});
+  }
+
+  function HoverCapturebt(){
+    
+    gsap.to(captureScreenBT.current, {x: 0, y: 0, rotation: 10, scale: 1.1});
+    // gsap.to(filesFly.current, {x: 0, y: 0, rotation: -20, scale: 1.4});
+  }
+
+  function LeaveCapturebt(){
+    gsap.to(captureScreenBT.current, {x: 0, y: 0, rotation: 0, scale: 1.0});
+
+  }
+
   function startRecording() {
     setRecording(true);
     recordedBlobs = [];
@@ -203,26 +246,26 @@ export default function Home() {
     </div>
     
     <div className='wrapper'>
-    <div className='arrowOptions'><img src={arrowOptions}/></div>
+    <div ref={arrowRef} className='arrowOptions'><img src={arrowOptions}/></div>
     <div className='logo'><img  alt="Logo GIFTAPE" src={logo}/></div>
     <div className='stepOne'><img  alt="stepOne" src={stepOne}/></div>
     <div className='stepTwo'><img  alt="steptwo" src={stepTwo}/></div>
     <div className='stepThree'><img  alt="stepthree" src={stepThree}/></div>
     <div className='rays'></div>
-    <button onClick={(e)=>stopRecording()}>STOP</button>
+    {/* <button onClick={(e)=>stopRecording()}>STOP</button> */}
     <div className='recordScreenIcon'></div>
-    <div ref={captureScreenBT} onClick={(e)=>captureScreen()} className='recordScreenText'></div>
+    <div ref={captureScreenBT} onMouseOver={HoverCapturebt} onMouseLeave={LeaveCapturebt} onClick={(e)=>captureScreen()} className='recordScreenText'></div>
 
 
-    <div className='filesFly'></div>
-    <div className='uploadFile'>
+    <div className='filesFly' ref={filesFly}></div>
+    <div className='uploadFile' ref={uploadFileBT} onMouseLeave={LeaveUploadbt} onMouseOver={HoverUploadbt}>
     <input type="file" onChange={(e)=> setVideo(URL.createObjectURL(e.target.files?.item(0)))} />   
     </div>
 
     <button className='ConvertBT' onClick={convertToGif}>Convert</button>
-    <button onClick={(e)=>setInCut(videoRef.current.currentTime)}>Set In</button>
+    {/* <button onClick={(e)=>setInCut(videoRef.current.currentTime)}>Set In</button>
     <button onClick={(e)=>setOutCut(videoRef.current.currentTime)}>Set Out</button>
-    
+     */}
 
 
     <div className="TVFrame"></div>
@@ -233,9 +276,6 @@ export default function Home() {
     {/* {video && <video className="videoPlayer" onTimeUpdate={UpdateTime} onPlay={()=> setDuration(videoRef.current.duration)}  ref={videoRef} playsInline autoPlay={true} loop muted src={video}></video>} */}
     </div>
 
-          <p>
-            Duration: {duration}
-          </p>
         <div className="sliders">
           <div className='sliderIn'>
             <input className="InSlider" ref={sliderIn} value={inCut} onChange={(e)=>handleInSlider(e)} min="0" max="100" step="1" type="range" />

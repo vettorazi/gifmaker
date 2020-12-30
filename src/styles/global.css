@@ -144,7 +144,7 @@ body{
   position:absolute;
   width:904px;
   height:80px;
-  margin-top:600px;
+  margin-top:654px;
   left:100px;
   background-image: url('../images/filmStrip.png');
   background-size: contain;
@@ -233,7 +233,7 @@ body{
   height:200px;
   margin-left:50%;
   left:-140px;
-  margin-top:380px;
+  margin-top:450px;
 }
 .sliderIn{
   position: absolute;
