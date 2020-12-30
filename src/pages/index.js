@@ -9,6 +9,7 @@ import OutFrame from '../images/Out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
 import crossBT from '../images/crossbt.png';
 import videoIntro from '../images/videointro.mp4';
+import arrowOptions from '../images/arrow_options.png';
 
 const ffmpeg = createFFmpeg({ log: false });
 
@@ -200,7 +201,9 @@ export default function Home() {
       {gif && <img  alt="YourGif" className="yourgif" src={gif}/>}
       {gif && <h3>result</h3>}
     </div>
+    
     <div className='wrapper'>
+    <div className='arrowOptions'><img src={arrowOptions}/></div>
     <div className='logo'><img  alt="Logo GIFTAPE" src={logo}/></div>
     <div className='stepOne'><img  alt="stepOne" src={stepOne}/></div>
     <div className='stepTwo'><img  alt="steptwo" src={stepTwo}/></div>
