@@ -12,6 +12,7 @@ import crossBT from '../images/crossbt.png';
 import videoIntro from '../images/videointro.mp4';
 import arrowOptions from '../images/arrow_options.gif';
 import pleaseWait from '../images/pleasewait.gif';
+import {Helmet} from "react-helmet";
 
 const ffmpeg = createFFmpeg({ log: false });
 
@@ -249,8 +250,23 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
     setRecording(false);
     setUserInteraction(true);
   }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.title = "GifTAPE";
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer && window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-Q7NM67VBX5');
+    }
+  })
+
+
   return ready ? (
 <div className="App">
+    <Helmet>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q7NM67VBX5"></script>
+    </Helmet>
     <div className="GifView" style={gifpage? {display:'block'}:{display:'none'}}>
     <img alt="saveTitle" className="saveyourTitle" src={SaveYour}/>
     <img  alt="closeWindow" className="crossBT" onClick={closeGifView} src={crossBT}/>
