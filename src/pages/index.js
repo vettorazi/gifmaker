@@ -79,7 +79,7 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
   const percent2int =(inPercentage)=>{
     // if(videoRef.current.duration===Infinity)
     let inInt = inPercentage/100 * duration;
-    console.warn({'inInt':inPercentage, 'current Time': duration})
+    // console.warn({'inInt':inPercentage, 'current Time': duration})
     return parseFloat(inInt);
   }
   const int2percent =(inInt)=>{
