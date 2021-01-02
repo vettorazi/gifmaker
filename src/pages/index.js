@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import gsap from "gsap";
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 import logo from '../images/logo.png';
-import stepOne from '../images/step_1.gif';
-import stepTwo from '../images/step_2.gif';
-import stepThree from '../images/step3.gif';
+import stepOne from '../images/step_1.png';
+import stepTwo from '../images/step_2.png';
 import InFrame from '../images/In_frame.png';
 import OutFrame from '../images/out_frame.png';
 import SaveYour from '../images/saveyourGif.png';
@@ -75,7 +74,6 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
   useEffect(()=>{
     load();
     console.log("loaded!")
-    // sliderOut.current.value=100;
     }, [])
 
   const percent2int =(inPercentage)=>{
@@ -289,7 +287,6 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
     <div className='logo'><img  alt="Logo GIFTAPE" src={logo}/></div>
     <div className='stepOne'><img  alt="stepOne" src={stepOne}/></div>
     <div className='stepTwo'><img  alt="steptwo" src={stepTwo}/></div>
-    <div className='stepThree'><img  alt="stepthree" src={stepThree}/></div>
     <div className='rays'></div>
     {/* <button onClick={(e)=>stopRecording()}>STOP</button> */}
     <div className='recordScreenIcon'></div>

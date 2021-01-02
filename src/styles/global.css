@@ -117,23 +117,20 @@ body{
 
 .stepOne{
   position: absolute;
-  right: -200px;
-  top: 30px;
+  right: -100px;
+  top: 50px;
 }
 .stepOne img{
   width: 80%;
 }
 .stepTwo img{
-  width: 80%;
-}
-.stepThree img{
-  width: 80%;
+  width: 90%;
 }
 
 .stepTwo{
   position: absolute;
-  right: -160px;
-  top: 270px;
+  right: -80px;
+  top: 350px;
 }
 .stepThree{
   position: absolute;
