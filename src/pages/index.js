@@ -13,8 +13,16 @@ import videoIntro from '../images/videointro.mp4';
 import arrowOptions from '../images/arrow_options.gif';
 import pleaseWait from '../images/pleasewait.gif';
 import {Helmet} from "react-helmet";
+import getBlobDuration from 'get-blob-duration';//Known issue with Chrome, fix: https://www.npmjs.com/package/get-blob-duration
 
 const ffmpeg = createFFmpeg({ log: false });
+
+
+//TODO:
+//-Do an intro with all setps. maybe sync with the intro for the buttons.
+//change color of buttons/interactivity.
+//Redo the draw text.
+//white hover in botoes
 
 let mediaRecorder;
 let recordedBlobs;
@@ -37,7 +45,7 @@ export default function Home() {
   const [gif, setGif ] = useState();
   const [currentTime, setCurrentTime] = useState(0);
   const [percentageTime, setPercentageTime] = useState(0);
-  const [duration, setDuration] = useState(null);
+  const [duration, setDuration] = useState(10);
   const [inCut, setInCut] = useState(10);
   const [outCut, setOutCut] = useState(80);
   const [recording, setRecording] = useState(false);
@@ -49,12 +57,6 @@ export default function Home() {
 
 
   useEffect(() => {
-         
-    // gsap.from(arrowRef.current, {
-    //   rotation: 180,
-    //     ease: 'none',
-    //     delay: 1
-    // });
     const onMouseMove=(e=>{
       if(e.clientY>window.innerHeight*.5){
 gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
@@ -77,12 +79,14 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
     }, [])
 
   const percent2int =(inPercentage)=>{
-    let inInt = inPercentage/100 * videoRef.current.duration;
-    return inInt.toFixed(2);
+    // if(videoRef.current.duration===Infinity)
+    let inInt = inPercentage/100 * duration;
+    console.warn({'inInt':inPercentage, 'current Time': duration})
+    return parseFloat(inInt);
   }
   const int2percent =(inInt)=>{
     let outPercentage = inInt*100/ videoRef.current.duration;
-    return outPercentage.toFixed(2);
+    return parseFloat(outPercentage.toFixed(2));
   }
 
   const convertToGif = async () => {
@@ -103,7 +107,8 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
   function handleInSlider(e){
     if(video){
       e.target.value<outCut? setInCut(e.target.value):e.target.value = outCut;
-      thumbIn.current.currentTime=percent2int(e.target.value);
+      console.log(typeof(e.target.value), parseFloat(e.target.value), parseFloat(percent2int(e.target.value)))
+      thumbIn.current.currentTime=parseFloat(percent2int(e.target.value));
     }
   }
   
@@ -164,8 +169,13 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
         // recordedVideo.src = null;
         // recordedVideo.srcObject = null;
         setVideo(window.URL.createObjectURL(superBuffer));
-        videoRef.current.controls = true;
+        videoRef.current.controls = false;
         videoRef.current.play();
+        (async function() {
+          const duration = await getBlobDuration(superBuffer)
+          console.warn(duration + ' seconds')
+          setDuration(duration);
+        })()
       }, 1500);
 
       
