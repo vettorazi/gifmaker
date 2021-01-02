@@ -261,7 +261,7 @@ gsap.to(arrowRef.current, {x: 0, y: 0, rotation: 40});
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      document.title = "GifTAPE";
+      document.title = "GifTape.cc";
       window.dataLayer = window.dataLayer || [];
       function gtag() { window.dataLayer && window.dataLayer.push(arguments); }
       gtag('js', new Date());
