@@ -18,9 +18,8 @@ const ffmpeg = createFFmpeg({ log: false });
 
 
 //TODO:
-//-Do an intro with all setps. maybe sync with the intro for the buttons.
+
 //change color of buttons/interactivity.
-//Redo the draw text.
 //white hover in botoes
 
 let mediaRecorder;
